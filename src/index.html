@@ -1,11 +1,16 @@
-
-
+<%
+    const emailConfig = {
+        ...require('./email.config.js'),
+        ...require
+    }
+%>
+ 
 <!doctype html>
 <html lang="ru">
     <head>
         <meta charset='windows-1251'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Творите волшебство с «Царевнами» из «Леонардо»!</title>
+        <title><%=emailConfig.topic%></title>
     </head>
     <body style="padding:0; margin:0;">
         <!-- фон рассылки -->
