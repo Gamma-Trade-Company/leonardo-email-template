@@ -1,0 +1,95 @@
+
+<%
+    _.forEach(productBlocks, block => {
+%>
+    <tr>
+        <td align="center" style="padding-top: 47px;padding-bottom: 15px;padding-right:30px;padding-left:30px;">
+            <!-- подзаголовок -->
+            <span style="font-size: 24px; color: #4f4f4f;text-transform:uppercase;line-height: 28px;">
+                <%=block.header%>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding-left: 30px;padding-right: 30px; padding-bottom: 15px;">
+            <%
+                _.forEach(block.content, item => {
+                    if (item.tag === 'p') {
+            %>
+                <p style="font-size: 16px; text-align:left;line-height: 19px; margin-top: 0; margin-bottom: 0;padding-bottom: 10px;">
+                    <%=item.html%>
+                </p> 
+            <%
+                    }
+                })
+            %>
+        </td>
+    </tr>
+
+    <%
+        let products = block.products
+        let productsCount = products.length
+        let lastRowItemCount = productsCount % 2
+        _.forEach(products, (product, i) => {
+            if (i%2 === 0) {
+                const isLastProduct = i === productsCount - 1
+                %>
+                    <tr>
+                        <td align="center" valign="top" style="padding:0;">
+                            <!-- 2 товара, кнопка "Заказать" (текст) -->
+                            <table width="<%=isLastProduct ? '50%' : '100%'%>" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                    <tr>
+                                        <td align="center" valign="middle" style="padding-left: 30px;padding-right:15px;"><a href="<%=products[i].link%>" target="_blank"><img src="<%=products[i].img%>" width="100%" style="margin: 0px; border: 1px solid #e8e8e8; outline:none; max-width:100%;" alt=""/></a></td>
+                                        <% if (!isLastProduct) { %>
+                                            <td align="center" valign="middle" style="padding-right:30px;padding-left:15px;"><a href="<%=products[i+1].link%>" target="_blank"><img src="<%=products[i+1].img%>" width="100%" style="margin: 0px; border: 1px solid #e8e8e8; outline:none; max-width:100%;" alt=""/></a></td>
+                                        <% } %>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" valign="middle" style="padding-left: 30px;padding-right:15px;padding-top:12px;font-size: 18px; color: #000000;max-width: 255px;">
+                                            <a href="<%=products[i].link%>" style="color: #000000; text-decoration: none;" target="_blank"><%=products[i].title%></a></td>
+                                        <% if (!isLastProduct) { %>
+                                            <td align="center" valign="middle" style="padding-right:30px;padding-left:15px;padding-top:12px;font-size: 18px; color: #000000;max-width: 255px;">
+                                            <a href="<%=products[i+1].link%>" style="color: #000000; text-decoration: none;" target="_blank"><%=products[i+1].title%></a></td>
+                                        <% } %>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" valign="top" style="padding-left: 30px;padding-right:15px;padding-top:1px;font-size: 14px; color: #000000;max-width:255px;">
+                                            <span style="font-size: 14px;">
+                                                <%=products[i].subtitle%>
+                                            </span>
+                                        </td>
+                                        <% if (!isLastProduct) { %>
+                                            <td align="center" valign="top" style="padding-right:30px;padding-left:15px;padding-top:1px;font-size: 14px; color: #000000;max-width:255px;">
+                                                <span style="font-size: 14px;">
+                                                    <%=products[i+1].subtitle%>
+                                                    </span>
+                                            </td>
+                                        <% } %>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" valign="middle" style="padding-left: 30px;padding-right:15px;padding-top:12px;font-size: 16px; color: #000000;">Цена: <span style="color: #d95c60;"><%=products[i].cost%></span> руб.</td>
+                                        <% if (!isLastProduct) { %>
+                                            <td align="center" valign="middle" style="padding-right:30px;padding-left:15px;padding-top:12px;font-size: 16px; color: #000000;">Цена: <span style="color: #d95c60;"><%=products[i+1].cost%></span> руб.</td>
+                                        <% } %>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" valign="middle" style="padding-left:30px; padding-right: 15px; padding-top:10px;"><a href="<%=products[i].link%>" target="_blank" style="color: #ffffff; border-radius: 20px; background-color: #d95c60; text-decoration: none; width: 155px; height: 40px; text-align: center; font-size: 15px; line-height: 40px; display:block;">Купить</a></td>
+                                        <% if (!isLastProduct) { %>
+                                            <td align="center" valign="middle" style="padding-right: 30px; padding-left:15px;padding-top:10px;"><a href="<%=products[i+1].link%>" target="_blank" style="color: #ffffff; border-radius: 20px; background-color: #d95c60; text-decoration: none; width: 155px; height: 40px; text-align: center; font-size: 15px; line-height: 40px; display:block;">Купить</a></td>
+                                        <% } %>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" valign="middle" style="padding-top: 15px;">&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                <%
+            }
+        })
+    %>
+<%
+    })
+%>
