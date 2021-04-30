@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
+const EncodingPlugin = require('webpack-encoding-plugin')
 
 module.exports = {
     entry: "/src/index.js",
@@ -24,11 +25,18 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             inject: false
+        }),
+        new EncodingPlugin({
+            test: /\.(html|js|json)$/u,
+            encoding: 'windows-1251'
         })
     ],
     devServer: {
         overlay: true,
-        open: true
+        open: true,
+        headers: {
+            'Content-Type': 'text/html; charset=windows-1251'
+         }
     },
     mode: process.env.NODE_ENV === 'production ' ? 'production' : 'development'
 }

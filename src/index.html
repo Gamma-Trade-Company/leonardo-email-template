@@ -1,37 +1,163 @@
-<!DOCTYPE html>
-<html lang="en" style="height: 100%">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webpack template email</title>
-</head>
-<body bgcolor="#F0F2F4" leftmargin="0" topmargin="0" style="height: 100%">
-    <table width="100%" cellspacing="0" cellpadding="0" border="0" style="height: 100%;">
-        <tr>
-            <td align="center" style="padding:0">
-                <table cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width:600px; border:#DEDEDE 1px solid" bgcolor="#ffffff">
-                    <tr>
-                        <td style="padding:30px 40px; border-bottom:#DEDEDE 1px solid;">
-                            <h1 style="font-family:Arial,Helvetica,sans-serif; color: #3C3C3C">
-                                Webpack template email
-                            </h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding:30px 40px">
-                            <%let paragraphs = [
-                                    {content: "This is one of some paragraphs that is output from components via lodash."},
-                                    {content: "You can create your own components and use them in your email template."}
-                              ]
-                            %>
-                            <%=_.template(require('./components/paragraph.html').default)(paragraphs[0])%>
-                            <%=_.template(require('./components/paragraph.html').default)(paragraphs[1])%>
-                        </td>
-                    </tr>
+<%
+    const emailConfig = {
+        ...require('./email.config.js'),
+        ...require
+    }
+%>
+ 
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset='windows-1251'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><%=emailConfig.topic%></title>
+    </head>
+    <body style="padding:0; margin:0;">
+        <!-- фон рассылки -->
+        <div style="width: 100%; background-color: #f1f1f1;">
+            <center>
+                <!-- надпись ""Если у Вас некорректно отображается данная рассылка" -->
+                <div style="font-size:12px; background-color: #484848; color:#fefefe; text-align:center; min-height: 30px; line-height: 30px; font-family: Arial, Helvetica, sans-serif; min-width: 320px; max-width:600px; margin-left: auto; margin-right: auto;">Если у Вас некорректно отображается данная рассылка <a href="https://leonardo.ru/subscribe/subscribe_301a.html" target="_blank" style="text-decoration: underline; color: #f39339;">нажмите&nbsp;здесь</a></div>
+                <div style="max-width:600px; min-width:320px; font-family: Arial, Helvetica, sans-serif; margin-left:auto; margin-right:auto;background-color:#ffffff;color: #4f4f4f;hyphens:none;">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody><tr>
+                            <td align="center" style="padding-top: 40px;">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tbody><tr>
+                                        <td align="center" valign="middle">
+                                            <!-- логотип -->
+                                            <a href="https://leonardo.ru/" target="_blank"><img src="https://leonardo.ru/subscribe/images/vol163/logo_leo.png" width="191" height="37" alt="логотип Леонардо" style="outline:none; border:none;"></a>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding-top: 13px;padding-bottom: 0;">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                        <td align="center">
+                                            <!-- ссылки на разделы -->
+                                            <a href="https://leonardo.ru/shop/" target="_blank" style="color: #4f4f4f;font-size:12px;text-decoration:underline;padding-left:10px;">Адреса магазинов</a>
+                                            <a href="https://leonardo.ru/feedback/" target="_blank" style="color:#4f4f4f;font-size:12px;text-decoration:underline;padding-left:20px;">Задать вопрос</a>
+                                            <a href="https://leonardo.ru/arrive/" target="_blank" style="color: #4f4f4f;font-size:12px;text-decoration:underline;padding-left:19px;">Доставка</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding-top: 40px;padding-right:30px;padding-left:30px;">
+                                <!-- заголовок -->
+                                <span style="font-size: 30px; color: #4f4f4f;text-transform:uppercase;line-height:36px;">
+                                <strong><%=emailConfig.topic%></strong>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding-left: 30px;padding-right: 30px; padding-bottom: 15px;">
+                                <%_.forEach(emailConfig.introduction, item => {
+                                    if (item.tag === 'p') {
+                                %>
+                                    <p style="font-size: 16px; text-align:left;line-height: 19px; margin-top: 0px;padding-top: 10px; margin-bottom: 0;">
+                                        <%=item.html%>    
+                                    </p>
+                                <%
+                                    }
+                                })%>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top" style="margin:0px; padding:0px;padding-bottom:15px;">
+                                <!-- основной баннер -->
+                                
+                                <img src="<%=emailConfig.banner%>" width="100%" style="margin: 0px; border: 0; outline: none; max-width: 100%;" alt="">
+                                   
+                            </td>
+                        </tr>
+                        
+                        <%=_.template(require('./components/blocks.html').default)({productBlocks: emailConfig.productBlocks})%>
+                        
+                        <tr>
+                            <td align="left" style="padding-left: 30px;padding-right: 30px;padding-top: 2px; padding-bottom: 32px;">
+                                <%
+                                    _.forEach(emailConfig.ending, item => {
+                                        if (item.tag === 'p') {
+                                            %>
+                                                <p style="font-size: 16px; text-align:center;line-height: 19px; margin-top: 0; margin-bottom: 0;padding-bottom:0;">
+                                                    <%=item.html%>
+                                                </p>
+                                            <%
+                                        }
+                                    })
+                                %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top" style="margin:0px; padding:0px; padding-top: 5px; padding-bottom:12px;">
+                              
+                                <a href="https://leonardo.ru/app/" target="_blank" style="text-decoration: none;outline:none;">
+                                    <img src="https://leonardo.ru/subscribe/images/vol284/banner2.jpg" width="100%" style="margin: 0px; border: 0; outline: none; max-width: 100%;" alt="Онлайн-мастерская Леонардо. Погружайтесь в творчество!">
+                                </a> 
+                            </td>
+                        </tr>
+                    </tbody></table>
+                   
+                    
+                    <!-- футер -->
+                <div style="padding-left: 7%; padding-right: 6%; padding-top: 25px; padding-bottom: 30px; background-color: #ffffff; text-align: center; font-size:14px; color:#4f4f4f;"><a href="https://leonardo.ru/" target="_blank" style="text-decoration:none;"><img src="https://leonardo.ru/subscribe/images/vol163/logo_leo.png" width="191" height="37" alt="логотип Леонардо" style="outline:none; border:none;"></a><br>
+                    <br>
+                    <strong>
+                    Оставайтесь с нами – впереди всё самое интересное!<br>
+                    До новых встреч!
+                </strong>
+                </div>
+                <table width="100%" border="0" cellspacing="0" style="padding-bottom: 50px;">
+                    <tbody>
+                        <tr>
+                            <td align="center" style="padding-bottom: 20px;">
+                                <span>
+                                <a href="https://ok.ru/group/54798059307028" target="_blank" style="text-decoration: none">
+                                <img src="https://leonardo.ru/subscribe/images/social/ok.png" width="25" height="25" alt="Одноклассники" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                </a>
+                                <a href="https://vk.com/leonardogroup" target="_blank" style="text-decoration: none">
+                                <img src="https://leonardo.ru/subscribe/images/social/vk.png" width="25" height="25" alt="Вконтакте" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                </a>
+                                <a href="https://www.facebook.com/leonardogroup/" target="_blank" style="text-decoration: none">
+                                <img src="https://leonardo.ru/subscribe/images/social/fb.png" width="25" height="25" alt="Facebook" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                </a>
+                                <a href="https://twitter.com/Leonardohobby" target="_blank" style="text-decoration: none">
+                                <img src="https://leonardo.ru/subscribe/images/social/tw.png" width="25" height="25" alt="Twitter" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                </a>
+                                <a href="https://instagram.com/leonardo.hobby/" target="_blank" style="text-decoration: none">
+                                <img src="https://leonardo.ru/subscribe/images/social/inst.png" width="25" height="25" alt="Instagram" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                </a>
+                                <a href="https://www.youtube.com/user/leonardohobby" target="_blank" style="text-decoration: none">
+                                <img src="https://leonardo.ru/subscribe/images/social/youtube.png" width="25" height="25" alt="Youtube" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                </a>
+                                <a href="https://www.tiktok.com/@leonardo.hobby" target="_blank" style="text-decoration: none">
+                                    <img src="https://leonardo.ru/subscribe/images/social/tiktok_soc.png" width="25" height="25" alt="Tiktok" title="" style="margin: 0px; border: 1px solid #e8e8e8;">
+                                    </a>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <!-- ссылки на разделы -->
+                                        <a href="https://leonardo.ru/shop/" target="_blank" style="color: #4f4f4f;font-size:12px;text-decoration:underline;padding-left:10px;">Адреса магазинов</a>
+                                        <a href="https://leonardo.ru/feedback/" target="_blank" style="color:#4f4f4f;font-size:12px;text-decoration:underline;padding-left:20px;">Задать вопрос</a>
+                                        <a href="https://leonardo.ru/arrive/" target="_blank" style="color: #4f4f4f;font-size:12px;text-decoration:underline;padding-left:19px;">Доставка</a>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-            </td>
-        </tr>
-    </table>
-</body>
+                
+                <!-- отписка от рассылки -->
+                <div style="font-size:12px; background-color: #484848; color:#fefefe; text-align:left; padding-top:15px; padding-bottom:15px; font-family: Arial, Helvetica, sans-serif; min-width: 320px; max-width:600px; margin-left: auto; margin-right: auto;padding-left: 30px;padding-right:30px;">Вы получили это сообщение, т.к. подписались на рассылку на сайте Леонардо.<br><br> Отписаться от рассылки и получения информации от сети хобби-гипермаркетов Леонардо вы можете здесь: <a href="%unsubscribe%" target="_blank" style="text-decoration: underline; color: #f39339;">отписаться.</a></div>
+            </div>
+            </center>
+        </div>
+    </body>
 </html>
